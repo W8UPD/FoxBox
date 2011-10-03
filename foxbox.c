@@ -1,12 +1,16 @@
-// This is not technically C, but syntax-highlights decently as it.
-
 /*
-  Blink
-  Turns on an LED on for one second, then off for one second, repeatedly.
- 
-  This example code is in the public domain.
+ * foxbox.c - An Arduino Fox-Hunt system.
+ * (c) 2011-present, W8UPD - the Univ. Akron Amat. Radio Club
+ * Authored by Ricky Elrod, N8SQL
+ * Co-Authored by Jimmy Carter, KG4SGP and Chris Egeland, KD8LCV
+ * Released under a two-clause BSD license. See LICENSE for details.
  */
 
+// This is not technically C, but syntax-highlights decently as it.
+
+// ============== Configuration of FoxBox ===================
+
+// These values are in miliseconds
 const int DIT = 100;
 const int DAH = DIT * 3;
 const int LETTER_SPACE = DIT * 3;
@@ -18,13 +22,26 @@ const int ID_DELAY = 15;
 // Miliseconds to wait after keying PTT, before sending audio.
 const int PRE_ID = 500;
 
-// Pin assignments
+// What to send
+const String MESSAGE = "w8upd/b";
+
+// ========= Pin assignments ==========
+// The pin to blink morse, as sending.
 const int LED_PIN = 13;
+
+// The pin to activate PTT.
 const int PTT_PIN = 5;
+
+// The pin to send audio out of.
 const int TONE_PIN = 6;
 
+/**
+ * Convert a char/letter to appropriate dots and dashes.
+ * @param char letter The letter to encode
+ * @return String Morse code representation (ASCII "." and "-") of the given
+                  char.
+*/
 String convert_morse(char letter) {
-  
   switch (letter) {
     case 'a': return ".-";
     case 'b': return "-...";
@@ -67,24 +84,16 @@ String convert_morse(char letter) {
     case ',': return "--..--";
     case '-': return "-....-";
     case '/': return "-..-.";
-    default:
-      return "";
+    default: return "";
   }
 }
 
-void setup() {
-  // LED stuff.
-  pinMode(LED_PIN, OUTPUT);
-  
-  // PTT stuff.
-  pinMode(PTT_PIN, OUTPUT);
-  
-  // Audio output.
-  pinMode(TONE_PIN, OUTPUT);
-  
-//  Serial.begin(9600);
-}
-
+/**
+ * Blink the LED and sound the tone for one "dit" or "dah"
+ *
+ * @param char type_delay A char representing a dit or dah ('.' or '-') which
+                          determines how long the action happens.
+*/
 void blink(char type_delay) {
   analogWrite(TONE_PIN, 127);
   digitalWrite(LED_PIN, HIGH);
@@ -98,6 +107,11 @@ void blink(char type_delay) {
   delay(DIT);
 }
 
+/**
+ * Iterate through a given string and perform blink() on each character.
+ *
+ * @param String text The string of letters to encode to morse.
+ */
 void perform_blink(String text) {
   for (int i = 0; i <= text.length(); i++) {
 
@@ -123,10 +137,29 @@ void perform_blink(String text) {
   }
 }
 
+
+/**
+ * Enter the program here.
+ */
+void setup() {
+  // LED stuff.
+  pinMode(LED_PIN, OUTPUT);
+  
+  // PTT stuff.
+  pinMode(PTT_PIN, OUTPUT);
+  
+  // Audio output.
+  pinMode(TONE_PIN, OUTPUT);
+
+}
+
+/**
+ * Do this as the program runs.
+ */
 void loop() {
   digitalWrite(PTT_PIN, HIGH);
   delay(PRE_ID);
-  perform_blink("w8upd/b");
+  perform_blink(MESSAGE);
   digitalWrite(PTT_PIN, LOW);
   delay(ID_DELAY * 1000);
 }
