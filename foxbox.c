@@ -16,8 +16,9 @@ const int DAH = DIT * 3;
 const int LETTER_SPACE = DIT * 3;
 const int WORD_SPACE = DIT * 7;
 
-// Seconds to delay between identifying.
-const int ID_DELAY = 15;
+// Random number of seconds to delay between identifying.
+const int ID_DELAY_MINIMUM = 60;
+const int ID_DELAY_MAXIMUM = ID_DELAY_MINIMUM * 3;
 
 // Miliseconds to wait after keying PTT, before sending audio.
 const int PRE_ID = 500;
@@ -137,6 +138,21 @@ void perform_blink(String text) {
   }
 }
 
+/**
+ * Delays for a random amount of seconds, based on given arguments.
+ *
+ * @param int minimum Minimum number of seconds to delay
+ * @param int maximum Maximum number of seconds to delay
+ * @return int The number of seconds actually delayed
+ */
+int randomDelay(int minimum, int maximum) {
+  // Random noise on unconnected pin 0.
+  randomSeed(analogRead(0));
+  int randomSeconds = random(minimum, maximum);
+  delay(randomSeconds);
+  return randomSeconds;
+}
+
 
 /**
  * Enter the program here.
@@ -150,7 +166,6 @@ void setup() {
   
   // Audio output.
   pinMode(TONE_PIN, OUTPUT);
-
 }
 
 /**
@@ -161,5 +176,5 @@ void loop() {
   delay(PRE_ID);
   perform_blink(MESSAGE);
   digitalWrite(PTT_PIN, LOW);
-  delay(ID_DELAY * 1000);
+  randomDelay(ID_DELAY_MINIMUM * 1000, ID_DELAY_MAXIMUM * 1000);
 }
