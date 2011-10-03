@@ -1,0 +1,8 @@
+{
+  "project_id" : "FoxBox",
+  "conduit_uri" : "http://phabricator.w8upd.org/api/",
+  "unit_engine" : "PhutilUnitTestEngine",
+  "copyright_holder" : "W8UPD",
+  "remote_hooks_installed" : true
+}
+
