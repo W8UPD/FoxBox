@@ -11,7 +11,7 @@
 // ============== Configuration of FoxBox ===================
 
 // These values are in miliseconds
-const int DIT = 100;
+const int DIT = 60;
 const int DAH = DIT * 3;
 const int LETTER_SPACE = DIT * 3;
 const int WORD_SPACE = DIT * 7;
@@ -21,10 +21,10 @@ const int ID_DELAY_MINIMUM = 60;
 const int ID_DELAY_MAXIMUM = ID_DELAY_MINIMUM * 3;
 
 // Miliseconds to wait after keying PTT, before sending audio.
-const int PRE_ID = 500;
+const int PRE_ID = 1000;
 
 // What to send
-const String MESSAGE = "w8upd/b";
+const String MESSAGE = "de w8upd/b";
 
 // ========= Pin assignments ==========
 // The pin to blink morse, as sending.
