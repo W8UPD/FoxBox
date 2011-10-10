@@ -141,15 +141,17 @@ void perform_blink(String text) {
 /**
  * Delays for a random amount of seconds, based on given arguments.
  *
- * @param int minimum Minimum number of seconds to delay
- * @param int maximum Maximum number of seconds to delay
+ * @param int minimum Minimum number of miliseconds to delay
+ * @param int maximum Maximum number of miliseconds to delay
  * @return int The number of seconds actually delayed
  */
 int randomDelay(int minimum, int maximum) {
   // Random noise on unconnected pin 0.
   randomSeed(analogRead(0));
   int randomSeconds = random(minimum, maximum);
-  delay(randomSeconds);
+
+  // This math has to be done in the function call to prevent an overflow.
+  delay(randomSeconds * 1000);
   return randomSeconds;
 }
 
@@ -176,5 +178,5 @@ void loop() {
   delay(PRE_ID);
   perform_blink(MESSAGE);
   digitalWrite(PTT_PIN, LOW);
-  randomDelay(ID_DELAY_MINIMUM * 1000, ID_DELAY_MAXIMUM * 1000);
+  randomDelay(ID_DELAY_MINIMUM, ID_DELAY_MAXIMUM);
 }
